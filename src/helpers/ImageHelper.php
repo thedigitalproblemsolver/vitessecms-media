@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace VitesseCms\Media\Helpers;
 
@@ -6,18 +6,8 @@ use VitesseCms\Media\Utils\MediaUtil;
 use Phalcon\Di;
 use Phalcon\Image\Adapter\Imagick;
 
-/**
- * Class ImageHelper
- */
 class ImageHelper
 {
-    /**
-     * @param string $file
-     * @param int $width
-     * @param int $height
-     *
-     * @return string
-     */
     public static function resize(string $file, int $width = 0, int $height = 0): string
     {
         if ($width === 0 && $height === 0) :
@@ -75,11 +65,6 @@ class ImageHelper
         return $file;
     }
 
-    /**
-     * @param string $file
-     *
-     * @return string
-     */
     public static function buildUrl(string $file): string
     {
         return Di::getDefault()->get('url')->getBaseUri() .
