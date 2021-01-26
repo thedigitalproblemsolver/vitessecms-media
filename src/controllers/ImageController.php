@@ -29,7 +29,13 @@ class ImageController extends AbstractInjectable
                     && filemtime($file) > filemtime($cacheDir.$resizedFile)
                 )
             ) :
-                ImageHelper::resize($file, $width, $height);
+                ImageHelper::resize(
+                    $file,
+                    $this->configuration->getCacheDir(),
+                    (bool)$this->session->get('cache'),
+                    $width,
+                    $height
+                );
             endif;
             $file = $cacheDir.$resizedFile;
         endif;

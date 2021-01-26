@@ -8,8 +8,13 @@ use Phalcon\Image\Adapter\Imagick;
 
 class ImageHelper
 {
-    public static function resize(string $file, int $width = 0, int $height = 0): string
-    {
+    public static function resize(
+        string $file,
+        string $cacheDir,
+        bool $useCache,
+        int $width = 0,
+        int $height = 0
+    ): string {
         if ($width === 0 && $height === 0) :
             return $file;
         endif;
@@ -42,11 +47,11 @@ class ImageHelper
 
         if ($newHeight > 0 && $newWidth > 0) :
             $newFile = MediaUtil::getResizeFilename($file, $orgWidth, $orgHeight);
-            $cacheDir = Di::getDefault()->get('config')->get('cacheDir') . 'resized/';
+            $cacheDir = $cacheDir . 'resized/';
 
             if (
                 is_file($cacheDir . $newFile)
-                && Di::getDefault()->get('session')->get('cache') !== false
+                && $useCache !== false
             ) :
                 $file = $cacheDir . $newFile;
             else :
