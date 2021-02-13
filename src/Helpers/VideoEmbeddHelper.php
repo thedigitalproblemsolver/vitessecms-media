@@ -41,7 +41,7 @@ class VideoEmbeddHelper
         if($video->_('videoId')) :
             return $view->renderTemplate(
                 self::getProvider(),
-                Di::getDefault()->get('config')->get('rootDir') . 'template/core/views/partials/video',
+                Di::getDefault()->get('config')->get('rootDir') . 'template/core/Views/partials/video',
                 ['video' => $video]
 
             );
