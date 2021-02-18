@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../core/src/Utils/DebugUtil.php';
 require_once __DIR__ . '/../../configuration/src/Services/ConfigService.php';
 
 $cacheLifeTime = 604800;
-$useCache = $_SESSIONt['cache']??true;
+$useCache = $_SESSIONt['cache'] ?? true;
 if (DebugUtil::isDocker($_SERVER['SERVER_ADDR'])) :
     $cacheLifeTime = 1;
     $useCache = false;
@@ -34,7 +34,7 @@ $bootstrap = new BootstrapMediaService();
 $bootstrap
     ->setSession()
     ->setCache(
-        __DIR__.'/../../../../cache/',
+        __DIR__ . '/../../../../cache/',
         $useCache,
         $cacheLifeTime
     )
@@ -42,7 +42,6 @@ $bootstrap
     ->loadConfig()
     ->loaderSystem()
     ->router()
-    ->view()
-;
+    ->view();
 
 echo $bootstrap->application()->handle()->getContent();
