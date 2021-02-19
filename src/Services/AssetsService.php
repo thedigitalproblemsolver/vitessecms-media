@@ -37,6 +37,15 @@ class AssetsService extends Manager
         $this->css = [];
     }
 
+    public function loadAdmin(): void
+    {
+        $this->load('sortable');
+        $this->load('editor');
+        $this->load('select2');
+        $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime($this->webDir . '/assets/default/js/admin.js');
+        $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime($this->webDir . '/assets/default/css/admin.css');
+    }
+
     /**
      * @deprecated split up in smaller functions so we have more controle
      */
@@ -144,15 +153,6 @@ class AssetsService extends Manager
             endswitch;
             $this->used[] = $assetGroup;
         endif;
-    }
-
-    public function loadAdmin(): void
-    {
-        $this->load('sortable');
-        $this->load('editor');
-        $this->load('select2');
-        $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime($this->webDir . '/assets/default/js/admin.js');
-        $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime($this->webDir . '/assets/default/css/admin.css');
     }
 
     public function loadGoogleMaps(string $apiKey): void

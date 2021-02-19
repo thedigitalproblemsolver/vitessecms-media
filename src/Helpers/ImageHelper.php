@@ -14,7 +14,8 @@ class ImageHelper
         bool $useCache,
         int $width = 0,
         int $height = 0
-    ): string {
+    ): string
+    {
         if ($width === 0 && $height === 0) :
             return $file;
         endif;
