@@ -21,11 +21,12 @@ require_once __DIR__ . '/../../core/src/Services/CacheService.php';
 require_once __DIR__ . '/../../configuration/src/Utils/AccountConfigUtil.php';
 require_once __DIR__ . '/../../configuration/src/Utils/DomainConfigUtil.php';
 require_once __DIR__ . '/../../core/src/Utils/DebugUtil.php';
+require_once __DIR__ . '/../../configuration/src/Services/ConfigServiceInterface.php';
 require_once __DIR__ . '/../../configuration/src/Services/ConfigService.php';
 
 $cacheLifeTime = 604800;
-$useCache = $_SESSIONt['cache'] ?? true;
-if (DebugUtil::isDocker($_SERVER['SERVER_ADDR'])) :
+$useCache = $_SESSION['cache'] ?? true;
+if (DebugUtil::isDev()) :
     $cacheLifeTime = 1;
     $useCache = false;
 endif;
