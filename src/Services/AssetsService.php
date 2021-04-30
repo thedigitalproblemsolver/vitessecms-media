@@ -93,7 +93,7 @@ class AssetsService extends Manager
                     $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
                     break;
                 case AssetsEnum::GOOGLE:
-                    $this->js[] = 'theGoogle.js';
+                    $this->loadTheGoogle();
                     break;
                 case AssetsEnum::JQUERY:
                     $this->loadJquery();
@@ -163,6 +163,11 @@ class AssetsService extends Manager
     public function loadJquery(): void
     {
         $this->js['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+    }
+
+    public function loadTheGoogle(): void
+    {
+        $this->js['theGoogle'] = 'theGoogle.js';
     }
 
     public function loadLazyLoading():void
