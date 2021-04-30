@@ -58,7 +58,7 @@ class AssetsService extends Manager
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js';
                     break;
                 case AssetsEnum::BOOTSTRAP_JS:
-                    $this->load(AssetsEnum::JQUERY);
+                    $this->loadJquery();
                     $this->load(AssetsEnum::POPPLER_JS);
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
@@ -83,7 +83,7 @@ class AssetsService extends Manager
                     $this->js[] = 'facebook.js';
                     break;
                 case AssetsEnum::FILEMANAGER:
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->load('font-awesome');
                     $this->load('site');
                     $this->css[] = 'filemanager.css';
@@ -96,20 +96,19 @@ class AssetsService extends Manager
                     $this->js[] = 'theGoogle.js';
                     break;
                 case AssetsEnum::JQUERY:
-                    $this->js[] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+                    $this->loadJquery();
                     break;
                 case AssetsEnum::FILTER:
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->load('slider');
                     $this->js[] = 'filter.js';
                     break;
                 case AssetsEnum::LAZYLOAD:
-                    $this->load('jquery');
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js';
+                    $this->loadLazyLoading();
                     break;
                 case AssetsEnum::MUSTACHE_JS:
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js';
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->js[] = 'jquery.mustache.js';
                     break;
                 case AssetsEnum::POPPLER_JS:
@@ -119,13 +118,13 @@ class AssetsService extends Manager
                     $this->js[] = '//www.google.com/recaptcha/api.js';
                     break;
                 case AssetsEnum::SELECT2:
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js';
                     $this->js[] = 'select2Sortable.js';
                     $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css';
                     break;
                 case AssetsEnum::SITE:
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->js[] = 'helper.js';
                     $this->js[] = 'ui.js';
                     $this->js[] = 'form.js';
@@ -136,13 +135,13 @@ class AssetsService extends Manager
                     $this->js[] = 'shop.js';
                     break;
                 case AssetsEnum::SLIDER:
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->load('site');
                     $this->js[] = 'bootstrap-slider.min.js';
                     $this->css[] = 'bootstrap-slider.min.css';
                     break;
                 case 'sortable':
-                    $this->load('jquery');
+                    $this->loadJquery();
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js';
                     break;
                 case AssetsEnum::SUMMERNOTE:
@@ -159,6 +158,17 @@ class AssetsService extends Manager
     {
         $this->js['google-maps-1'] = '//maps.google.com/maps/api/js?key=' . $apiKey;
         $this->js['google-maps-2'] = '//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.min.js';
+    }
+
+    public function loadJquery(): void
+    {
+        $this->js['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+    }
+
+    public function loadLazyLoading():void
+    {
+        $this->loadJquery();
+        $this->js['lazyload'] = '//cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js';
     }
 
     public function insertJs(string $url): void
