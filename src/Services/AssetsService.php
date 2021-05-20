@@ -100,9 +100,6 @@ class AssetsService extends Manager
                 case AssetsEnum::POPPLER_JS:
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
                     break;
-                case AssetsEnum::RECAPTCHA:
-                    $this->js[] = '//www.google.com/recaptcha/api.js';
-                    break;
                 case AssetsEnum::SHOP:
                     $this->js[] = 'shop.js';
                     break;
@@ -118,6 +115,11 @@ class AssetsService extends Manager
             endswitch;
             $this->used[] = $assetGroup;
         endif;
+    }
+
+    public function loadRecaptcha(): void
+    {
+        $this->js['recaptcha-api'] = '//www.google.com/recaptcha/api.js';
     }
 
     public function loadSelect2(): void
