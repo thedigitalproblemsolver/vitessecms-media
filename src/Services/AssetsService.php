@@ -41,7 +41,7 @@ class AssetsService extends Manager
     {
         $this->load('sortable');
         $this->load('editor');
-        $this->load('select2');
+        $this->loadSelect2();
         $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime($this->webDir . '/assets/default/js/admin.js');
         $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime($this->webDir . '/assets/default/css/admin.css');
     }
@@ -85,26 +85,12 @@ class AssetsService extends Manager
                 case AssetsEnum::FILEMANAGER:
                     $this->loadJquery();
                     $this->load('font-awesome');
-                    $this->load('site');
+                    $this->loadSite();
                     $this->css[] = 'filemanager.css';
                     $this->js[] = 'filemanager.js';
                     break;
                 case AssetsEnum::FONT_AWESOME:
                     $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
-                    break;
-                case AssetsEnum::GOOGLE:
-                    $this->loadTheGoogle();
-                    break;
-                case AssetsEnum::JQUERY:
-                    $this->loadJquery();
-                    break;
-                case AssetsEnum::FILTER:
-                    $this->loadJquery();
-                    $this->load('slider');
-                    $this->js[] = 'filter.js';
-                    break;
-                case AssetsEnum::LAZYLOAD:
-                    $this->loadLazyLoading();
                     break;
                 case AssetsEnum::MUSTACHE_JS:
                     $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js';
@@ -117,28 +103,8 @@ class AssetsService extends Manager
                 case AssetsEnum::RECAPTCHA:
                     $this->js[] = '//www.google.com/recaptcha/api.js';
                     break;
-                case AssetsEnum::SELECT2:
-                    $this->loadJquery();
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js';
-                    $this->js[] = 'select2Sortable.js';
-                    $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css';
-                    break;
-                case AssetsEnum::SITE:
-                    $this->loadJquery();
-                    $this->js[] = 'helper.js';
-                    $this->js[] = 'ui.js';
-                    $this->js[] = 'form.js';
-                    $this->js[] = 'ajax.js';
-                    $this->js[] = 'sys.js';
-                    break;
                 case AssetsEnum::SHOP:
                     $this->js[] = 'shop.js';
-                    break;
-                case AssetsEnum::SLIDER:
-                    $this->loadJquery();
-                    $this->load('site');
-                    $this->js[] = 'bootstrap-slider.min.js';
-                    $this->css[] = 'bootstrap-slider.min.css';
                     break;
                 case 'sortable':
                     $this->loadJquery();
@@ -152,6 +118,39 @@ class AssetsService extends Manager
             endswitch;
             $this->used[] = $assetGroup;
         endif;
+    }
+
+    public function loadSelect2(): void
+    {
+        $this->loadJquery();
+        $this->js['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js';
+        $this->js['select2Sortable'] = 'select2Sortable.js';
+        $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css';
+    }
+
+    public function loadFilter(): void
+    {
+        $this->loadJquery();
+        $this->loadSlider();
+        $this->js['filter-js'] = 'filter.js';
+    }
+
+    public function loadSlider(): void
+    {
+        $this->loadJquery();
+        $this->loadSite();
+        $this->js['bootstrap-slider'] = 'bootstrap-slider.min.js';
+        $this->css['bootstrap-slider'] = 'bootstrap-slider.min.css';
+    }
+
+    public function loadSite(): void
+    {
+        $this->loadJquery();
+        $this->js['helper-js'] = 'helper.js';
+        $this->js['ui-js'] = 'ui.js';
+        $this->js['form-js'] = 'form.js';
+        $this->js['ajax-js'] = 'ajax.js';
+        $this->js['sys-js'] = 'sys.js';
     }
 
     public function loadGoogleMaps(string $apiKey): void
