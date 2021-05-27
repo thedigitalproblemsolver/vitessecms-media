@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Media\Listeners;
+namespace VitesseCms\Media\Listeners\Blocks;
 
 use Phalcon\Events\Event;
 use VitesseCms\Block\Forms\BlockForm;
 use VitesseCms\Form\Models\Attributes;
 
-class BlockVideoListener
+class VideoListener
 {
     public function buildBlockForm(Event $event, BlockForm $form): void
     {
