@@ -2,7 +2,6 @@
 
 namespace VitesseCms\Media\Services;
 
-use VitesseCms\Media\Enums\AssetsEnum;
 use Phalcon\Assets\Manager;
 
 class AssetsService extends Manager
@@ -39,82 +38,88 @@ class AssetsService extends Manager
 
     public function loadAdmin(): void
     {
-        $this->load('sortable');
-        $this->load('editor');
+        $this->loadSortable();
+        $this->loadEditor();
         $this->loadSelect2();
         $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime($this->webDir . '/assets/default/js/admin.js');
         $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime($this->webDir . '/assets/default/css/admin.css');
     }
 
-    /**
-     * @deprecated split up in smaller functions so we have more controle
-     */
-    public function load(string $assetGroup): void
+    public function loadSortable(): void
     {
-        if (!in_array($assetGroup, $this->used, true)) :
-            switch ($assetGroup) :
-                case 'autocomplete':
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/corejs-typeahead/1.2.1/bloodhound.min.js';
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.2/bootstrap3-typeahead.min.js';
-                    break;
-                case AssetsEnum::BOOTSTRAP_JS:
-                    $this->loadJquery();
-                    $this->load(AssetsEnum::POPPLER_JS);
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
-                    break;
-                case AssetsEnum::BOOTSTRAP_TOGGLE:
-                    $this->load(AssetsEnum::BOOTSTRAP_JS);
-                    $this->js[] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js';
-                    $this->css[] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css';
-                    break;
-                case AssetsEnum::COLORPICKER:
-                    $this->load('bootstrapJs');
-                    $this->js[] = 'bootstrap-colorpicker.min.js';
-                    break;
-                case AssetsEnum::COOKIECONSENT:
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js';
-                    $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css';
-                    break;
-                case AssetsEnum::EDITOR:
-                    $this->load(AssetsEnum::SUMMERNOTE);
-                    break;
-                case AssetsEnum::FACEBOOK:
-                    $this->js[] = 'facebook.js';
-                    break;
-                case AssetsEnum::FILEMANAGER:
-                    $this->loadJquery();
-                    $this->load('font-awesome');
-                    $this->loadSite();
-                    $this->css[] = 'filemanager.css';
-                    $this->js[] = 'filemanager.js';
-                    break;
-                case AssetsEnum::FONT_AWESOME:
-                    $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
-                    break;
-                case AssetsEnum::MUSTACHE_JS:
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js';
-                    $this->loadJquery();
-                    $this->js[] = 'jquery.mustache.js';
-                    break;
-                case AssetsEnum::POPPLER_JS:
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
-                    break;
-                case AssetsEnum::SHOP:
-                    $this->js[] = 'shop.js';
-                    break;
-                case 'sortable':
-                    $this->loadJquery();
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js';
-                    break;
-                case AssetsEnum::SUMMERNOTE:
-                    $this->load('bootstrapJs');
-                    $this->js[] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js';
-                    $this->css[] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css';
-                    break;
-            endswitch;
-            $this->used[] = $assetGroup;
-        endif;
+        $this->loadJquery();
+        $this->js['sortable'] = '//cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js';
+    }
+
+    public function loadShop(): void
+    {
+        $this->js['shop'] = 'shop.js';
+    }
+
+    public function loadMustache(): void
+    {
+        $this->js['mustache'] = '//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js';
+        $this->loadJquery();
+        $this->js['jquery-mustache'] = 'jquery.mustache.js';
+    }
+
+    public function loadFileManager(): void
+    {
+        $this->loadJquery();
+        $this->loadFontAwesome();
+        $this->loadSite();
+        $this->css['filemanager'] = 'filemanager.css';
+        $this->js['filemanager'] = 'filemanager.js';
+    }
+
+    public function loadFontAwesome(): void
+    {
+        $this->css['font-awesome'] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
+    }
+
+    public function loadFacebook(): void
+    {
+        $this->js['facebook'] = 'facebook.js';
+    }
+
+    public function loadEditor(): void
+    {
+        $this->loadSummerNote();
+    }
+
+    public function loadSummerNote(): void
+    {
+        $this->loadBootstrapJs();
+        $this->js['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js';
+        $this->css['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css';
+    }
+
+
+    public function loadCookieConsent(): void
+    {
+        $this->js['cookieconsent'] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js';
+        $this->css['cookieconsent'] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css';
+    }
+
+    public function loadBootstrapColorPicker(): void
+    {
+        $this->loadBootstrapJs();
+        $this->js['bootstrap-colorpicker'] = 'bootstrap-colorpicker.min.js';
+    }
+
+    public function loadBootstrapToggle(): void
+    {
+        $this->loadBootstrapJs();
+        $this->js['bootstrap4-toggle'] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js';
+        $this->css['bootstrap4-toggle'] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css';
+    }
+
+    public function loadBootstrapJs(): void
+    {
+        $this->loadJquery();
+        $this->js['popper'] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
+        $this->js['tether'] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
+        $this->js['bootstrap'] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
     }
 
     public function loadRecaptcha(): void
@@ -171,7 +176,7 @@ class AssetsService extends Manager
         $this->js['theGoogle'] = 'theGoogle.js';
     }
 
-    public function loadLazyLoading():void
+    public function loadLazyLoading(): void
     {
         $this->loadJquery();
         $this->js['lazyload'] = '//cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js';
