@@ -2,6 +2,7 @@
 
 namespace VitesseCms\Media\Services;
 
+use Phalcon\Assets\Filters\Jsmin;
 use Phalcon\Assets\Manager;
 
 class AssetsService extends Manager
@@ -26,14 +27,22 @@ class AssetsService extends Manager
      */
     protected $webDir;
 
-    public function __construct(string $webDir)
-    {
+    /**
+     * @var Jsmin
+     */
+    private $jsMin;
+
+    public function __construct(
+        string $webDir,
+        Jsmin $jsmin
+    ) {
         parent::__construct();
 
         $this->webDir = $webDir;
         $this->used = [];
         $this->js = [];
         $this->css = [];
+        $this->jsMin = $jsmin;
     }
 
     public function loadAdmin(): void
@@ -75,11 +84,6 @@ class AssetsService extends Manager
     public function loadFontAwesome(): void
     {
         $this->css['font-awesome'] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
-    }
-
-    public function loadFacebook(): void
-    {
-        $this->js['facebook'] = 'facebook.js';
     }
 
     public function loadEditor(): void
@@ -185,6 +189,16 @@ class AssetsService extends Manager
     public function insertJs(string $url): void
     {
         $this->js[] = $url;
+    }
+
+    public function getInlineJs(): string
+    {
+        ob_start();
+        $this->outputInlineJs();
+        $return = ob_get_contents();
+        ob_end_clean();
+
+        return $this->jsMin->filter($return);
     }
 
     public function getByType(string $type): array
