@@ -32,6 +32,11 @@ class AssetsService extends Manager
      */
     private $jsMin;
 
+    /**
+     * @var array
+     */
+    private $eventLoaders;
+
     public function __construct(
         string $webDir,
         Jsmin $jsmin
@@ -43,6 +48,17 @@ class AssetsService extends Manager
         $this->js = [];
         $this->css = [];
         $this->jsMin = $jsmin;
+        $this->eventLoaders = [];
+    }
+
+    public function getEventLoaders(): array
+    {
+        return $this->eventLoaders;
+    }
+
+    public function setEventLoader(string $eventLoader): void
+    {
+        $this->eventLoaders[$eventLoader] = $eventLoader;
     }
 
     public function loadAdmin(): void
