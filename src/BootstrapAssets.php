@@ -3,7 +3,6 @@
 namespace VitesseCms\Media;
 
 use VitesseCms\Core\Enum\EnvEnum;
-use VitesseCms\Core\Utils\DebugUtil;
 use VitesseCms\Media\Helpers\BootstrapAssetsService;
 
 error_reporting(E_ALL);
@@ -25,6 +24,9 @@ require_once __DIR__ . '/../../core/src/AbstractEnum.php';
 require_once __DIR__ . '/../../core/src/Enum/EnvEnum.php';
 require_once __DIR__ . '/../../configuration/src/Services/ConfigServiceInterface.php';
 require_once __DIR__ . '/../../configuration/src/Services/ConfigService.php';
+
+$dotenv = \Dotenv\Dotenv::createUnsafeImmutable(__DIR__.'/../../../../');
+$dotenv->load();
 
 $cacheLifeTime = (int)getenv(EnvEnum::CACHE_LIFE_TIME);
 
