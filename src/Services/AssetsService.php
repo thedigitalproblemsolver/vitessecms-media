@@ -32,6 +32,11 @@ class AssetsService extends Manager
      */
     private $jsMin;
 
+    /**
+     * @var array
+     */
+    private $eventLoaders;
+
     public function __construct(
         string $webDir,
         Jsmin $jsmin
@@ -43,6 +48,17 @@ class AssetsService extends Manager
         $this->js = [];
         $this->css = [];
         $this->jsMin = $jsmin;
+        $this->eventLoaders = [];
+    }
+
+    public function getEventLoaders(): array
+    {
+        return $this->eventLoaders;
+    }
+
+    public function setEventLoader(string $eventLoader): void
+    {
+        $this->eventLoaders[$eventLoader] = $eventLoader;
     }
 
     public function loadAdmin(): void
@@ -175,6 +191,13 @@ class AssetsService extends Manager
         $this->js['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
     }
 
+    public function loadJqueryUi(): void
+    {
+        $this->loadJquery();
+        $this->js['jqueryUi'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
+        $this->css['jqueryUi'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css';
+    }
+
     public function loadTheGoogle(): void
     {
         $this->js['theGoogle'] = 'theGoogle.js';
@@ -199,6 +222,16 @@ class AssetsService extends Manager
         ob_end_clean();
 
         return $this->jsMin->filter($return);
+    }
+
+    public function getInlineCss(): string
+    {
+        ob_start();
+        $this->outputInlineCss();
+        $return = ob_get_contents();
+        ob_end_clean();
+
+        return $return;
     }
 
     public function getByType(string $type): array
