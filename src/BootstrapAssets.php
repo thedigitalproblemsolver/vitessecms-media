@@ -2,6 +2,7 @@
 
 namespace VitesseCms\Media;
 
+use VitesseCms\Core\Enum\EnvEnum;
 use VitesseCms\Core\Utils\DebugUtil;
 use VitesseCms\Media\Helpers\BootstrapAssetsService;
 
@@ -20,22 +21,18 @@ require_once __DIR__ . '/../../core/src/Services/CacheService.php';
 require_once __DIR__ . '/../../configuration/src/Utils/AccountConfigUtil.php';
 require_once __DIR__ . '/../../configuration/src/Utils/DomainConfigUtil.php';
 require_once __DIR__ . '/../../core/src/Utils/DebugUtil.php';
+require_once __DIR__ . '/../../core/src/AbstractEnum.php';
+require_once __DIR__ . '/../../core/src/Enum/EnvEnum.php';
 require_once __DIR__ . '/../../configuration/src/Services/ConfigServiceInterface.php';
 require_once __DIR__ . '/../../configuration/src/Services/ConfigService.php';
 
-$cacheLifeTime = 604800;
-$useCache = $_SESSION['cache'] ?? true;
-if (DebugUtil::isDev()) :
-    $cacheLifeTime = 1;
-    $useCache = false;
-endif;
+$cacheLifeTime = (int)getenv(EnvEnum::CACHE_LIFE_TIME);
 
 $bootstrap = new BootstrapAssetsService();
 $bootstrap
     ->setSession()
     ->setCache(
         __DIR__ . '/../../../../cache/',
-        $useCache,
         $cacheLifeTime
     )
     ->setUrl()
