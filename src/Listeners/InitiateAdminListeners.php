@@ -7,6 +7,7 @@ use VitesseCms\Core\Interfaces\InjectableInterface;
 use VitesseCms\Media\Blocks\Image;
 use VitesseCms\Media\Blocks\Logo;
 use VitesseCms\Media\Blocks\Video;
+use VitesseCms\Media\Enums\MediaEnum;
 use VitesseCms\Media\Listeners\Blocks\ImageListener;
 use VitesseCms\Media\Listeners\Blocks\LogoListener;
 use VitesseCms\Media\Listeners\Blocks\VideoListener;
@@ -18,5 +19,9 @@ class InitiateAdminListeners implements InitiateListenersInterface
         $di->eventsManager->attach(Image::class, new ImageListener());
         $di->eventsManager->attach(Logo::class, new LogoListener());
         $di->eventsManager->attach(Video::class, new VideoListener());
+        $di->eventsManager->attach(
+            MediaEnum::ASSETS_LISTENER,
+            new AssetsListener($di->configuration->getVendorNameDir())
+        );
     }
 }
