@@ -150,9 +150,9 @@ class AssetsService extends Manager
     public function loadSelect2(): void
     {
         $this->loadJquery();
-        $this->js['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.min.js';
+        $this->js['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
         $this->js['select2Sortable'] = 'select2Sortable.js';
-        $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css';
+        $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
     }
 
     public function loadFilter(): void
