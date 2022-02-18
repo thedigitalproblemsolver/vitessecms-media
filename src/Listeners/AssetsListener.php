@@ -27,6 +27,11 @@ class AssetsListener
         $assetsService->addInlineJs(file_get_contents($this->vendorBaseDir . 'media/src/Resources/js/initEnd.js'));
     }
 
+    public function addRecaptcha(Event $event, AssetsService $assetsService): void
+    {
+        $assetsService->loadRecaptcha();
+    }
+
     public function singleImageZoom(Event $event, AssetsService $assetsService): void
     {
         die();
