@@ -19,7 +19,7 @@
   },
   "require": {
     "vlucas/phpdotenv": "~5.4",
-    "vitessecms/core": "~0.2.21",
+    "vitessecms/core": "~0.2.22",
     "vitessecms/block": "~0.2.20",
     "vitessecms/form": "~0.2.9",
     "vitessecms/setting": "~0.2.5",
