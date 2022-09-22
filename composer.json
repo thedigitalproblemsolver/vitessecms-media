@@ -25,6 +25,6 @@
     "vitessecms/setting": "~0.2.5",
     "vitessecms/datafield": "~0.2.13",
     "vitessecms/admin": "~0.2.9",
-    "vitessecms/database": "~0.2.5"
+    "vitessecms/database": "~0.2.6"
   }
 }
