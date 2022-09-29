@@ -3,6 +3,7 @@
 namespace VitesseCms\Media\Forms;
 
 use VitesseCms\Form\AbstractForm;
+use VitesseCms\Form\Helpers\ElementHelper;
 use VitesseCms\Form\Models\Attributes;
 use VitesseCms\Media\Enums\CookieConsentEnum;
 
@@ -10,67 +11,80 @@ class CookieConsentInstallForm extends AbstractForm
 {
     public function build(): CookieConsentInstallForm
     {
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_POPUP_BACKGROUNDCOLOR, false)) :
+        if (!$this->setting->has(CookieConsentEnum::POPUP_BACKGROUNDCOLOR, false)) :
             $this->addColorPicker(
                 'Popup background color',
-                CookieConsentEnum::COOKIECONSENT_POPUP_BACKGROUNDCOLOR,
+                CookieConsentEnum::POPUP_BACKGROUNDCOLOR,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_POPUP_TEXTCOLOR, false)) :
+        if (!$this->setting->has(CookieConsentEnum::POPUP_TEXTCOLOR, false)) :
             $this->addColorPicker(
                 'Popup text color',
-                CookieConsentEnum::COOKIECONSENT_POPUP_TEXTCOLOR,
+                CookieConsentEnum::POPUP_TEXTCOLOR,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_BUTTON_BACKGROUNDCOLOR, false)) :
+        if (!$this->setting->has(CookieConsentEnum::BUTTON_BACKGROUNDCOLOR, false)) :
             $this->addColorPicker(
                 'Button background color',
-                CookieConsentEnum::COOKIECONSENT_BUTTON_BACKGROUNDCOLOR,
+                CookieConsentEnum::BUTTON_BACKGROUNDCOLOR,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_BUTTON_TEXTCOLOR, false)) :
+        if (!$this->setting->has(CookieConsentEnum::BUTTON_TEXTCOLOR, false)) :
             $this->addColorPicker(
                 'Button text color',
-                CookieConsentEnum::COOKIECONSENT_BUTTON_TEXTCOLOR,
+                CookieConsentEnum::BUTTON_TEXTCOLOR,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_MESSAGE, false)) :
+        if (!$this->setting->has(CookieConsentEnum::CONTENT_MESSAGE, false)) :
             $this->addText(
                 'Message',
-                CookieConsentEnum::COOKIECONSENT_CONTENT_MESSAGE,
+                CookieConsentEnum::CONTENT_MESSAGE,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_DISMISS, false)) :
+        if (!$this->setting->has(CookieConsentEnum::CONTENT_DISMISS, false)) :
             $this->addText(
                 'Content dismiss',
-                CookieConsentEnum::COOKIECONSENT_CONTENT_DISMISS,
+                CookieConsentEnum::CONTENT_DISMISS,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_LINK, false)) :
+        if (!$this->setting->has(CookieConsentEnum::CONTENT_LINK, false)) :
             $this->addText(
                 'Content link',
-                CookieConsentEnum::COOKIECONSENT_CONTENT_LINK,
+                CookieConsentEnum::CONTENT_LINK,
                 ( new Attributes())->setRequired()
             );
         endif;
 
-        if (!$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_URL, false)) :
+        if (!$this->setting->has(CookieConsentEnum::CONTENT_URL, false)) :
             $this->addText(
                 'Content url',
-                CookieConsentEnum::COOKIECONSENT_CONTENT_URL,
+                CookieConsentEnum::CONTENT_URL,
                 ( new Attributes())->setRequired()
+            );
+        endif;
+
+        if (!$this->setting->has(CookieConsentEnum::POSITION, false)) :
+            $this->addDropdown(
+                'Position',
+                CookieConsentEnum::POSITION,
+                ( new Attributes())->setRequired()->setOptions(ElementHelper::arrayToSelectOptions(
+                    [
+                        'Top' => 'top',
+                        'Bottom' => 'bottom'
+                    ]
+                ))
             );
         endif;
 

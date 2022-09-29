@@ -25,90 +25,101 @@ class AdmincookieconsentinstallController extends AbstractCreatorController
         $settings = [];
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_POPUP_BACKGROUNDCOLOR,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_POPUP_BACKGROUNDCOLOR)
+            !$this->setting->has(CookieConsentEnum::POPUP_BACKGROUNDCOLOR,false)
+            && $this->request->has(CookieConsentEnum::POPUP_BACKGROUNDCOLOR)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_POPUP_BACKGROUNDCOLOR] = [
+            $settings[CookieConsentEnum::POPUP_BACKGROUNDCOLOR] = [
                 'type' => TypeEnum::COLOR,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_POPUP_BACKGROUNDCOLOR),
+                'value' => $this->request->get(CookieConsentEnum::POPUP_BACKGROUNDCOLOR),
                 'name' => 'Cookie consent popup backgroundcolor',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_POPUP_TEXTCOLOR,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_POPUP_TEXTCOLOR)
+            !$this->setting->has(CookieConsentEnum::POPUP_TEXTCOLOR,false)
+            && $this->request->has(CookieConsentEnum::POPUP_TEXTCOLOR)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_POPUP_TEXTCOLOR] = [
+            $settings[CookieConsentEnum::POPUP_TEXTCOLOR] = [
                 'type' => TypeEnum::COLOR,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_POPUP_TEXTCOLOR),
+                'value' => $this->request->get(CookieConsentEnum::POPUP_TEXTCOLOR),
                 'name' => 'Cookie consent popup textcolor',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_BUTTON_BACKGROUNDCOLOR,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_BUTTON_BACKGROUNDCOLOR)
+            !$this->setting->has(CookieConsentEnum::BUTTON_BACKGROUNDCOLOR,false)
+            && $this->request->has(CookieConsentEnum::BUTTON_BACKGROUNDCOLOR)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_BUTTON_BACKGROUNDCOLOR] = [
+            $settings[CookieConsentEnum::BUTTON_BACKGROUNDCOLOR] = [
                 'type' => TypeEnum::COLOR,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_BUTTON_BACKGROUNDCOLOR),
+                'value' => $this->request->get(CookieConsentEnum::BUTTON_BACKGROUNDCOLOR),
                 'name' => 'Cookie consent button backgroundcolor',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_BUTTON_TEXTCOLOR,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_BUTTON_TEXTCOLOR)
+            !$this->setting->has(CookieConsentEnum::BUTTON_TEXTCOLOR,false)
+            && $this->request->has(CookieConsentEnum::BUTTON_TEXTCOLOR)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_BUTTON_TEXTCOLOR] = [
+            $settings[CookieConsentEnum::BUTTON_TEXTCOLOR] = [
                 'type' => TypeEnum::COLOR,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_BUTTON_TEXTCOLOR),
+                'value' => $this->request->get(CookieConsentEnum::BUTTON_TEXTCOLOR),
                 'name' => 'Cookie consent button textcolor',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_MESSAGE,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_CONTENT_MESSAGE)
+            !$this->setting->has(CookieConsentEnum::CONTENT_MESSAGE,false)
+            && $this->request->has(CookieConsentEnum::CONTENT_MESSAGE)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_CONTENT_MESSAGE] = [
+            $settings[CookieConsentEnum::CONTENT_MESSAGE] = [
                 'type' => TypeEnum::TEXT,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_CONTENT_MESSAGE),
+                'value' => $this->request->get(CookieConsentEnum::CONTENT_MESSAGE),
                 'name' => 'Cookie consent content message',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_DISMISS,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_CONTENT_DISMISS)
+            !$this->setting->has(CookieConsentEnum::CONTENT_DISMISS,false)
+            && $this->request->has(CookieConsentEnum::CONTENT_DISMISS)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_CONTENT_DISMISS] = [
+            $settings[CookieConsentEnum::CONTENT_DISMISS] = [
                 'type' => TypeEnum::TEXT,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_CONTENT_DISMISS),
+                'value' => $this->request->get(CookieConsentEnum::CONTENT_DISMISS),
                 'name' => 'Cookie consent content dismiss',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_LINK,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_CONTENT_LINK)
+            !$this->setting->has(CookieConsentEnum::CONTENT_LINK,false)
+            && $this->request->has(CookieConsentEnum::CONTENT_LINK)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_CONTENT_LINK] = [
+            $settings[CookieConsentEnum::CONTENT_LINK] = [
                 'type' => TypeEnum::TEXT,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_CONTENT_LINK),
+                'value' => $this->request->get(CookieConsentEnum::CONTENT_LINK),
                 'name' => 'Cookie consent content link',
             ];
         endif;
 
         if (
-            !$this->setting->has(CookieConsentEnum::COOKIECONSENT_CONTENT_URL,false)
-            && $this->request->has(CookieConsentEnum::COOKIECONSENT_CONTENT_URL)
+            !$this->setting->has(CookieConsentEnum::CONTENT_URL,false)
+            && $this->request->has(CookieConsentEnum::CONTENT_URL)
         ) :
-            $settings[CookieConsentEnum::COOKIECONSENT_CONTENT_URL] = [
+            $settings[CookieConsentEnum::CONTENT_URL] = [
                 'type' => TypeEnum::TEXT,
-                'value' => $this->request->get(CookieConsentEnum::COOKIECONSENT_CONTENT_URL),
+                'value' => $this->request->get(CookieConsentEnum::CONTENT_URL),
                 'name' => 'Cookie consent content url',
+            ];
+        endif;
+
+        if (
+            !$this->setting->has(CookieConsentEnum::POSITION,false)
+            && $this->request->has(CookieConsentEnum::POSITION)
+        ) :
+            $settings[CookieConsentEnum::POSITION] = [
+                'type' => TypeEnum::TEXT,
+                'value' => $this->request->get(CookieConsentEnum::POSITION),
+                'name' => 'Cookie consent toolbar position',
             ];
         endif;
 
