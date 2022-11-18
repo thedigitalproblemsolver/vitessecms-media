@@ -3,7 +3,7 @@
 namespace VitesseCms\Media\Helpers;
 
 use VitesseCms\Media\Utils\MediaUtil;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 use Phalcon\Image\Adapter\Imagick;
 
 class ImageHelper
@@ -11,9 +11,9 @@ class ImageHelper
     public static function resize(
         string $file,
         string $cacheDir,
-        bool $useCache,
-        int $width = 0,
-        int $height = 0
+        bool   $useCache,
+        int    $width = 0,
+        int    $height = 0
     ): string
     {
         if ($width === 0 && $height === 0) :

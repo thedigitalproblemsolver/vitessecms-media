@@ -4,7 +4,7 @@ namespace VitesseCms\Media\Helpers;
 
 use VitesseCms\Core\Factories\ObjectFactory;
 use VitesseCms\Core\Services\ViewService;
-use Phalcon\Di;
+use Phalcon\Di\Di;
 
 class VideoEmbeddHelper
 {

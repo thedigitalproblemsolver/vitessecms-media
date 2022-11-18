@@ -4,6 +4,7 @@ namespace VitesseCms\Media\Services;
 
 use Phalcon\Assets\Filters\Jsmin;
 use Phalcon\Assets\Manager;
+use Phalcon\Html\TagFactory;
 
 class AssetsService extends Manager
 {
@@ -38,10 +39,15 @@ class AssetsService extends Manager
     private $eventLoaders;
 
     public function __construct(
-        string $webDir,
-        Jsmin $jsmin
-    ) {
-        parent::__construct();
+        string     $webDir,
+        Jsmin      $jsmin,
+        TagFactory $tagFactory,
+        array      $options = []
+    )
+    {
+        parent::__construct($tagFactory, $options);
+        //public function __construct(\Phalcon\Html\TagFactory $tagFactory, array $options = [])
+
 
         $this->webDir = $webDir;
         $this->used = [];
@@ -76,6 +82,39 @@ class AssetsService extends Manager
         $this->js['sortable'] = '//cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js';
     }
 
+    public function loadJquery(): void
+    {
+        $this->js['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+    }
+
+    public function loadEditor(): void
+    {
+        $this->loadSummerNote();
+    }
+
+    public function loadSummerNote(): void
+    {
+        $this->loadBootstrapJs();
+        $this->js['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js';
+        $this->css['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css';
+    }
+
+    public function loadBootstrapJs(): void
+    {
+        $this->loadJquery();
+        $this->js['popper'] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
+        $this->js['tether'] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
+        $this->js['bootstrap'] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
+    }
+
+    public function loadSelect2(): void
+    {
+        $this->loadJquery();
+        $this->js['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
+        $this->js['select2Sortable'] = 'select2Sortable.js';
+        $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
+    }
+
     public function loadShop(): void
     {
         $this->js['shop'] = 'shop.js';
@@ -102,18 +141,15 @@ class AssetsService extends Manager
         $this->css['font-awesome'] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
     }
 
-    public function loadEditor(): void
+    public function loadSite(): void
     {
-        $this->loadSummerNote();
+        $this->loadJquery();
+        $this->js['helper-js'] = 'helper.js';
+        $this->js['ui-js'] = 'ui.js';
+        $this->js['form-js'] = 'form.js';
+        $this->js['ajax-js'] = 'ajax.js';
+        $this->js['sys-js'] = 'sys.js';
     }
-
-    public function loadSummerNote(): void
-    {
-        $this->loadBootstrapJs();
-        $this->js['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js';
-        $this->css['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css';
-    }
-
 
     public function loadCookieConsent(): void
     {
@@ -134,25 +170,9 @@ class AssetsService extends Manager
         $this->css['bootstrap4-toggle'] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css';
     }
 
-    public function loadBootstrapJs(): void
-    {
-        $this->loadJquery();
-        $this->js['popper'] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
-        $this->js['tether'] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
-        $this->js['bootstrap'] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
-    }
-
     public function loadRecaptcha(): void
     {
         $this->js['recaptcha-api'] = '//www.google.com/recaptcha/api.js';
-    }
-
-    public function loadSelect2(): void
-    {
-        $this->loadJquery();
-        $this->js['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
-        $this->js['select2Sortable'] = 'select2Sortable.js';
-        $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
     }
 
     public function loadFilter(): void
@@ -170,25 +190,10 @@ class AssetsService extends Manager
         $this->css['bootstrap-slider'] = 'bootstrap-slider.min.css';
     }
 
-    public function loadSite(): void
-    {
-        $this->loadJquery();
-        $this->js['helper-js'] = 'helper.js';
-        $this->js['ui-js'] = 'ui.js';
-        $this->js['form-js'] = 'form.js';
-        $this->js['ajax-js'] = 'ajax.js';
-        $this->js['sys-js'] = 'sys.js';
-    }
-
     public function loadGoogleMaps(string $apiKey): void
     {
         $this->js['google-maps-1'] = '//maps.google.com/maps/api/js?key=' . $apiKey;
         $this->js['google-maps-2'] = '//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.min.js';
-    }
-
-    public function loadJquery(): void
-    {
-        $this->js['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
     }
 
     public function loadJqueryUi(): void
