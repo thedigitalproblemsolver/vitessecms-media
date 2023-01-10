@@ -4,7 +4,7 @@ namespace VitesseCms\Media;
 
 use Dotenv\Dotenv;
 use VitesseCms\Core\Enum\EnvEnum;
-use VitesseCms\Media\Helpers\BootstrapMediaService;
+use VitesseCms\Media\Services\BootstrapMediaService;
 
 error_reporting(E_ALL);
 ini_set('display_errors', '1');

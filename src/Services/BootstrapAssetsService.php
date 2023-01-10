@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace VitesseCms\Media\Helpers;
+namespace VitesseCms\Media\Services;
 
-use VitesseCms\Core\Services\BootstrapService;
 use Phalcon\Mvc\Router;
+use VitesseCms\Core\Services\BootstrapService;
 
 class BootstrapAssetsService extends BootstrapService
 {
