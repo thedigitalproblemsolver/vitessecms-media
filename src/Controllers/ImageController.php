@@ -2,12 +2,12 @@
 
 namespace VitesseCms\Media\Controllers;
 
-use VitesseCms\Core\AbstractInjectable;
+use Phalcon\Mvc\Controller;
 use VitesseCms\Core\Utils\FileUtil;
 use VitesseCms\Media\Helpers\ImageHelper;
 use VitesseCms\Media\Utils\MediaUtil;
 
-class ImageController extends AbstractInjectable
+class ImageController extends Controller
 {
     public function indexAction(): void
     {

@@ -2,10 +2,10 @@
 
 namespace VitesseCms\Media\Controllers;
 
-use VitesseCms\Core\AbstractInjectable;
+use Phalcon\Mvc\Controller;
 use VitesseCms\Core\Utils\FileUtil;
 
-class AssetsController extends AbstractInjectable
+class AssetsController extends Controller
 {
     public function indexAction(): void
     {
