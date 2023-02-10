@@ -2,58 +2,36 @@
 
 namespace VitesseCms\Media\Services;
 
+use Phalcon\Assets\Filters\Cssmin;
 use Phalcon\Assets\Filters\Jsmin;
 use Phalcon\Assets\Manager;
 use Phalcon\Html\TagFactory;
+use Phalcon\Tag;
 
 class AssetsService extends Manager
 {
-    /**
-     * @var array
-     */
-    protected $used;
-
-    /**
-     * @var array
-     */
-    protected $js;
-
-    /**
-     * @var array
-     */
-    protected $css;
-
-    /**
-     * @var string
-     */
-    protected $webDir;
-
-    /**
-     * @var Jsmin
-     */
-    private $jsMin;
-
-    /**
-     * @var array
-     */
-    private $eventLoaders;
+    private array $js;
+    private array $css;
+    private string $webDir;
+    private array $eventLoaders;
+    private string $account;
+    private string $baseUri;
 
     public function __construct(
         string     $webDir,
-        Jsmin      $jsmin,
+        string     $account,
+        string     $baseUri,
         TagFactory $tagFactory,
         array      $options = []
     )
     {
         parent::__construct($tagFactory, $options);
-        //public function __construct(\Phalcon\Html\TagFactory $tagFactory, array $options = [])
-
 
         $this->webDir = $webDir;
-        $this->used = [];
+        $this->account = $account;
+        $this->baseUri = $baseUri;
         $this->js = [];
         $this->css = [];
-        $this->jsMin = $jsmin;
         $this->eventLoaders = [];
     }
 
@@ -143,7 +121,7 @@ class AssetsService extends Manager
 
     public function loadSite(): void
     {
-        $this->loadJquery();
+        $this->loadBootstrapJs();
         $this->js['helper-js'] = 'helper.js';
         $this->js['ui-js'] = 'ui.js';
         $this->js['form-js'] = 'form.js';
@@ -226,7 +204,7 @@ class AssetsService extends Manager
         $return = ob_get_contents();
         ob_end_clean();
 
-        return $this->jsMin->filter($return);
+        return $return;
     }
 
     public function getInlineCss(): string
@@ -237,6 +215,72 @@ class AssetsService extends Manager
         ob_end_clean();
 
         return $return;
+    }
+
+    public function buildAssets(string $type): ?string
+    {
+        $collection = $this->collection($type);
+        $collectionExternal = $this->collection('external' . $type);
+        $fileBase = 'assets/' . $this->account . '/' . $type . '/site.' . $type;
+        $cacheHash = '';
+        $addFunction = 'add' . ucfirst($type);
+
+        if (is_file($this->webDir . $fileBase)) :
+            $cacheHash .= filemtime($this->webDir . $fileBase);
+            $collection->$addFunction($fileBase);
+        endif;
+
+        foreach ($this->getByType($type) as $file) :
+            $link = 'assets/default/' . $type . '/' . $file;
+            if (is_file($link)) :
+                $cacheHash .= filemtime($link);
+                if (substr_count($file, '.' . $type) === 0) :
+                    $link = $this->baseUri . $file . '?v=' . filemtime($link);
+                endif;
+                $collection->$addFunction($link);
+            else :
+                $collectionExternal->$addFunction($file, false);
+            endif;
+        endforeach;
+
+        $filename = md5($cacheHash);
+        $combinedFile = 'assets/' . $this->account . '/' . $type . '/cache/' . $filename . '.' . $type;
+
+        $collection->join(true);
+        $collection->setTargetPath($this->webDir . $combinedFile);
+        $collection->setTargetUri($combinedFile);
+        switch ($type) :
+            case 'js':
+                if (!is_file($this->webDir . $combinedFile)) :
+                    $collection->addFilter(new Jsmin());
+                    $this->outputJs($type);
+                endif;
+
+                $tags = '';
+                ob_start();
+                $this->outputJs('external' . $type);
+                $tags .= ob_get_contents();
+                ob_end_clean();
+                $tags .= Tag::javascriptInclude($combinedFile);
+
+                return $tags;
+            case 'css':
+                //if (!is_file($this->webDir . $combinedFile)) :
+                $collection->addFilter(new Cssmin());
+                $this->outputCss($type);
+                //endif;
+
+                $tags = '';
+                ob_start();
+                $this->outputCss('external' . $type);
+                $tags .= ob_get_contents();
+                ob_end_clean();
+                $tags .= Tag::stylesheetLink($combinedFile);
+
+                return $tags;
+        endswitch;
+
+        return null;
     }
 
     public function getByType(string $type): array
