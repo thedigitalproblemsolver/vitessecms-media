@@ -21,12 +21,12 @@
     "php": ">=8.1",
     "ext-phalcon": "5.1.4",
     "vlucas/phpdotenv": "~5.4",
-    "vitessecms/core": "~0.4.0",
+    "vitessecms/core": "~0.4.1",
     "vitessecms/block": "~0.4.0",
     "vitessecms/form": "~0.4.0",
-    "vitessecms/setting": "~0.3.0",
-    "vitessecms/datafield": "~0.3.0",
-    "vitessecms/admin": "~0.3.0",
-    "vitessecms/database": "~0.3.3"
+    "vitessecms/setting": "~0.3.1",
+    "vitessecms/datafield": "~0.3.1",
+    "vitessecms/admin": "~0.3.1",
+    "vitessecms/database": "~0.3.4"
   }
 }
