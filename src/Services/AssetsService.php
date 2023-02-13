@@ -121,7 +121,6 @@ class AssetsService extends Manager
 
     public function loadSite(): void
     {
-        $this->loadBootstrapJs();
         $this->js['helper-js'] = 'helper.js';
         $this->js['ui-js'] = 'ui.js';
         $this->js['form-js'] = 'form.js';
