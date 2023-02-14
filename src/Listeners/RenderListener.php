@@ -26,4 +26,12 @@ class RenderListener
         endforeach;
         $this->eventsManager->fire(MediaEnum::ASSETS_INIT_END, $this->assetsService);
     }
+
+    public function loadAssets(Event $event): void
+    {
+        $this->assetsService->loadBootstrapJs();
+        $this->assetsService->loadMustache();
+        $this->assetsService->loadShop();
+        $this->assetsService->loadSite();
+    }
 }
