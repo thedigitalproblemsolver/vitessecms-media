@@ -22,7 +22,7 @@
     "ext-phalcon": "5.1.4",
     "vlucas/phpdotenv": "~5.4",
     "vitessecms/core": "~0.4.7",
-    "vitessecms/block": "~0.4.3",
+    "vitessecms/block": "~0.4.4",
     "vitessecms/form": "~0.4.3",
     "vitessecms/setting": "~0.3.3",
     "vitessecms/datafield": "~0.3.3",
