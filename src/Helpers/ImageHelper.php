@@ -2,9 +2,9 @@
 
 namespace VitesseCms\Media\Helpers;
 
-use VitesseCms\Media\Utils\MediaUtil;
 use Phalcon\Di\Di;
 use Phalcon\Image\Adapter\Imagick;
+use VitesseCms\Media\Utils\MediaUtil;
 
 class ImageHelper
 {
@@ -39,11 +39,11 @@ class ImageHelper
 
         $desired_aspect_ratio = $width / $height;
         if ($source_aspect_ratio > $desired_aspect_ratio) :
-            $newHeight = round($height);
-            $newWidth = round((int)($height * $source_aspect_ratio));
+            $newHeight = (int)round($height);
+            $newWidth = (int)round(($height * $source_aspect_ratio));
         else :
-            $newWidth = round($width);
-            $newHeight = round((int)($width / $source_aspect_ratio));
+            $newWidth = (int)round($width);
+            $newHeight = (int)round(($width / $source_aspect_ratio));
         endif;
 
         if ($newHeight > 0 && $newWidth > 0) :
