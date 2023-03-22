@@ -2,10 +2,11 @@
 
 namespace VitesseCms\Media\Enums;
 
-use VitesseCms\Core\AbstractEnum;
-
-class AssetsEnum extends AbstractEnum
+enum AssetsEnum: string
 {
-    public const ATTACH_SERVICE_LISTENER = 'assetsService:attach';
-    public const SERVICE_LISTENER = 'assetsService';
+    case ATTACH_SERVICE_LISTENER = 'assetsService:attach';
+    case SERVICE_LISTENER = 'assetsService';
+    case RENDER_LISTENER = 'RenderListener';
+    case RENDER_LISTENER_LOAD_ASSETS = 'RenderListener:loadAssets';
+    case RENDER_LISTENER_BUILD_JAVASCRIPT = 'RenderListener:buildJs';
 }
