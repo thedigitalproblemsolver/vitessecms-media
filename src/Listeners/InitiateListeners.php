@@ -22,6 +22,6 @@ class InitiateListeners implements InitiateListenersInterface
             new CookieConsentListener(AdminUtil::isAdminPage())
         );
         $di->eventsManager->attach('RenderListener', new RenderListener($di->eventsManager, $di->assets));
-        $di->eventsManager->attach(AssetsEnum::SERVICE_LISTENER, new AssetsServiceListener($di->assets));
+        $di->eventsManager->attach(AssetsEnum::SERVICE_LISTENER->value, new AssetsServiceListener($di->assets));
     }
 }
