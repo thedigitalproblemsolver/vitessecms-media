@@ -50,6 +50,7 @@ class AssetsService extends Manager
         $this->loadSortable();
         $this->loadEditor();
         $this->loadSelect2();
+        $this->loadFontAwesome();
         $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime($this->webDir . '/assets/default/js/admin.js');
         $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime($this->webDir . '/assets/default/css/admin.css');
     }
@@ -93,6 +94,11 @@ class AssetsService extends Manager
         $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
     }
 
+    public function loadFontAwesome(): void
+    {
+        $this->css['font-awesome'] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
+    }
+
     public function loadShop(): void
     {
         $this->js['shop'] = 'shop.js';
@@ -112,11 +118,6 @@ class AssetsService extends Manager
         $this->loadSite();
         $this->css['filemanager'] = 'filemanager.css';
         $this->js['filemanager'] = 'filemanager.js';
-    }
-
-    public function loadFontAwesome(): void
-    {
-        $this->css['font-awesome'] = '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css';
     }
 
     public function loadSite(): void
