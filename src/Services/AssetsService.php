@@ -16,6 +16,7 @@ class AssetsService extends Manager
     private array $eventLoaders;
     private string $account;
     private string $baseUri;
+    private string $headCode;
 
     public function __construct(
         string     $webDir,
@@ -33,6 +34,7 @@ class AssetsService extends Manager
         $this->js = [];
         $this->css = [];
         $this->eventLoaders = [];
+        $this->headCode = '';
     }
 
     public function getEventLoaders(): array
@@ -293,5 +295,15 @@ class AssetsService extends Manager
         endswitch;
 
         return [];
+    }
+
+    public function addHeadCode(string $code): void
+    {
+        $this->headCode .= $code;
+    }
+
+    public function getHeadCode(): string
+    {
+        return $this->headCode;
     }
 }
