@@ -7,10 +7,12 @@ use VitesseCms\Core\Interfaces\InjectableInterface;
 use VitesseCms\Media\Blocks\Image;
 use VitesseCms\Media\Blocks\Logo;
 use VitesseCms\Media\Blocks\Video;
+use VitesseCms\Media\Enums\AssetsEnum;
 use VitesseCms\Media\Enums\MediaEnum;
 use VitesseCms\Media\Listeners\Blocks\ImageListener;
 use VitesseCms\Media\Listeners\Blocks\LogoListener;
 use VitesseCms\Media\Listeners\Blocks\VideoListener;
+use VitesseCms\Media\Listeners\Services\AssetsServiceListener;
 
 class InitiateAdminListeners implements InitiateListenersInterface
 {
@@ -23,5 +25,7 @@ class InitiateAdminListeners implements InitiateListenersInterface
             MediaEnum::ASSETS_LISTENER,
             new AssetsListener($di->configuration->getVendorNameDir())
         );
+        $di->eventsManager->attach(AssetsEnum::SERVICE_LISTENER->value, new AssetsServiceListener($di->assets));
+        $di->eventsManager->attach('RenderListener', new RenderListener($di->eventsManager, $di->assets));
     }
 }
