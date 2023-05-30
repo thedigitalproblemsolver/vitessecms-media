@@ -199,6 +199,11 @@ class AssetsService extends Manager
         $this->js[] = $url;
     }
 
+    public function insertCss(string $url): void
+    {
+        $this->css[] = $url;
+    }
+
     public function getInlineJs(): string
     {
         ob_start();
