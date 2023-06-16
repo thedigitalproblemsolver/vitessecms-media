@@ -12,6 +12,9 @@ class AssetsController extends Controller
         $this->url->setUrl($_SERVER['REQUEST_URI']);
         $urlPath = $this->url->getParsed('path');
         $file = $this->config->get('webDir') . ltrim($urlPath, '/');
+        if (substr_count($file, 'css.map')) {
+            $file = str_replace('cache/', '', $file);
+        }
         if (is_file($file)) :
             FileUtil::display($file);
         endif;
