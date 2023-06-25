@@ -272,10 +272,10 @@ class AssetsService extends Manager
 
                 return $tags;
             case 'css':
-                //if (!is_file($this->webDir . $combinedFile)) :
-                $collection->addFilter(new Cssmin());
-                $this->outputCss($type);
-                //endif;
+                if (!is_file($this->webDir . $combinedFile)) :
+                    $collection->addFilter(new Cssmin());
+                    $this->outputCss($type);
+                endif;
 
                 $tags = '';
                 ob_start();
