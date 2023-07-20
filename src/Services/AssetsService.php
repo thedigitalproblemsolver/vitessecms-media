@@ -259,7 +259,7 @@ class AssetsService extends Manager
         $collection->setTargetUri($combinedFile);
         switch ($type) :
             case 'js':
-                if (!is_file($this->webDir . $combinedFile)) :
+                if (!is_file($this->webDir . $combinedFile) || isset($_SESSION['cache'])) :
                     $collection->addFilter(new Jsmin());
                     $this->outputJs($type);
                 endif;
@@ -273,7 +273,7 @@ class AssetsService extends Manager
 
                 return $tags;
             case 'css':
-                if (!is_file($this->webDir . $combinedFile)) :
+                if (!is_file($this->webDir . $combinedFile) || isset($_SESSION['cache'])) :
                     $collection->addFilter(new Cssmin());
                     $this->outputCss($type);
                 endif;
