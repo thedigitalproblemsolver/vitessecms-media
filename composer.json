@@ -26,7 +26,7 @@
     "vitessecms/form": "^1.1.2",
     "vitessecms/setting": "^1.0.1",
     "vitessecms/datafield": "^1.2.1",
-    "vitessecms/admin": "^1.5.0",
+    "vitessecms/admin": "^1.5.1",
     "vitessecms/database": "^1.0.1"
   }
 }
