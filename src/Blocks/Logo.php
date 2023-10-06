@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Media\Blocks;
 
@@ -14,7 +16,7 @@ use VitesseCms\Core\Services\ViewService;
 use VitesseCms\Setting\Enum\SettingEnum;
 use VitesseCms\Setting\Services\SettingService;
 
-class Logo extends AbstractBlockModel
+final class Logo extends AbstractBlockModel
 {
     private readonly SettingService $settingService;
     private readonly UrlService $urlService;
@@ -26,7 +28,10 @@ class Logo extends AbstractBlockModel
 
         $this->settingService = $this->eventsManager->fire(SettingEnum::ATTACH_SERVICE_LISTENER->value, new stdClass());
         $this->urlService = $this->eventsManager->fire(UrlEnum::ATTACH_SERVICE_LISTENER, new stdClass());
-        $this->configService = $this->eventsManager->fire(ConfigurationEnum::ATTACH_SERVICE_LISTENER->value, new stdClass());
+        $this->configService = $this->eventsManager->fire(
+            ConfigurationEnum::ATTACH_SERVICE_LISTENER->value,
+            new stdClass()
+        );
     }
 
     public function getTemplateParams(Block $block): array
@@ -40,6 +45,7 @@ class Logo extends AbstractBlockModel
         $params['displayMotto'] = $block->getBool('displayMotto');
         $params['UPLOAD_URI'] = $this->configService->getUploadUri();
         $params['SITE_LOGO_MOBILE'] = $this->settingService->getString('SITE_LOGO_MOBILE');
+        $params['SITE_LOGO_DEFAULT'] = $this->settingService->getString('SITE_LOGO_DEFAULT');
 
         return $params;
     }

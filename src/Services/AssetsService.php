@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Media\Services;
 
@@ -12,25 +14,18 @@ class AssetsService extends Manager
 {
     private array $js;
     private array $css;
-    private string $webDir;
     private array $eventLoaders;
-    private string $account;
-    private string $baseUri;
     private string $headCode;
 
     public function __construct(
-        string     $webDir,
-        string     $account,
-        string     $baseUri,
+        private readonly string $webDir,
+        private readonly string $account,
+        private readonly string $baseUri,
         TagFactory $tagFactory,
-        array      $options = []
-    )
-    {
+        array $options = []
+    ) {
         parent::__construct($tagFactory, $options);
 
-        $this->webDir = $webDir;
-        $this->account = $account;
-        $this->baseUri = $baseUri;
         $this->js = [];
         $this->css = [];
         $this->eventLoaders = [];
@@ -54,8 +49,12 @@ class AssetsService extends Manager
         $this->loadSelect2();
         $this->loadFontAwesome();
         $this->loadMustache();
-        $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime($this->webDir . '/assets/default/js/admin.js');
-        $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime($this->webDir . '/assets/default/css/admin.css');
+        $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime(
+                $this->webDir . '/assets/default/js/admin.js'
+            );
+        $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime(
+                $this->webDir . '/assets/default/css/admin.css'
+            );
     }
 
     public function loadSortable(): void
@@ -239,6 +238,7 @@ class AssetsService extends Manager
         endif;
 
         foreach ($this->getByType($type) as $file) :
+            var_dump($file);
             $link = 'assets/default/' . $type . '/' . $file;
             if (is_file($link)) :
                 $cacheHash .= filemtime($link);
@@ -293,14 +293,11 @@ class AssetsService extends Manager
 
     public function getByType(string $type): array
     {
-        switch ($type) :
-            case 'js':
-                return $this->js;
-            case 'css':
-                return $this->css;
-        endswitch;
-
-        return [];
+        return match ($type) {
+            'js' => $this->js,
+            'css' => $this->css,
+            default => [],
+        };
     }
 
     public function addHeadCode(string $code): void
