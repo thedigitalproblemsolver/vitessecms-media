@@ -1,19 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Media\Helpers;
 
-use VitesseCms\Core\Factories\ObjectFactory;
-use VitesseCms\Core\Services\ViewService;
 use Phalcon\Di\Di;
+use VitesseCms\Core\Factories\ObjectFactory;
+use VitesseCms\Mustache\DTO\RenderPartialDTO;
+use VitesseCms\Mustache\Enum\ViewEnum;
 
-class VideoEmbeddHelper
+final class VideoEmbeddHelper
 {
-    /**
-     * @var array
-     */
-    protected static $url;
+    protected static array $url;
 
-    public static function getEmbeddCode(ViewService $view, string $url = null): string
+    public static function getEmbeddCode(string $url = null): string
     {
         if (is_string($url)) :
             self::setUrl($url);
@@ -29,13 +29,11 @@ class VideoEmbeddHelper
                 endif;
                 break;
         endswitch;
-
+        
         if ($video->_('videoId')) :
-            return $view->renderTemplate(
-                self::getProvider(),
-                Di::getDefault()->get('config')->get('rootDir') . 'Template/core/Views/partials/video',
-                ['video' => $video]
-
+            return Di::getDefault()->get('eventsManager')->fire(
+                ViewEnum::RENDER_PARTIAL_EVENT,
+                new RenderPartialDTO('video/' . self::getProvider(), ['video' => $video])
             );
         endif;
 
