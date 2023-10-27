@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace VitesseCms\Media\Blocks;
 
@@ -12,6 +14,6 @@ class Video extends AbstractBlockModel
     {
         parent::parse($block);
 
-        $block->set('videoCode', VideoEmbeddHelper::getEmbeddCode($this->view, $block->_('videoUrl')));
+        $block->set('videoCode', VideoEmbeddHelper::getEmbeddCode($block->_('videoUrl')));
     }
 }
