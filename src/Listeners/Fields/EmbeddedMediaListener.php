@@ -19,12 +19,22 @@ final class EmbeddedMediaListener
         )) {
             $beforeExecuteFrontendRouteDTO->currentItem->set(
                 $beforeExecuteFrontendRouteDTO->datafield->getCallingName(),
-                VideoEmbeddHelper::getEmbeddCode(
+                $this->getEmbeddedCode(
                     $beforeExecuteFrontendRouteDTO->currentItem->getString(
                         $beforeExecuteFrontendRouteDTO->datafield->getCallingName()
                     )
                 )
             );
         }
+    }
+
+    private function getEmbeddedCode(string $url): ?string
+    {
+        if (VideoEmbeddHelper::hasProvider($url)) {
+            return VideoEmbeddHelper::getEmbeddCode($url);
+        }
+
+
+        return null;
     }
 }

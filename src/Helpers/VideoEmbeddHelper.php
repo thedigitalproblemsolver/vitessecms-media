@@ -29,7 +29,7 @@ final class VideoEmbeddHelper
                 endif;
                 break;
         endswitch;
-        
+
         if ($video->_('videoId')) :
             return Di::getDefault()->get('eventsManager')->fire(
                 ViewEnum::RENDER_PARTIAL_EVENT,
@@ -61,5 +61,10 @@ final class VideoEmbeddHelper
         endif;
 
         return '';
+    }
+
+    public static function hasProvider(string $url): bool
+    {
+        return !empty(self::getProvider($url));
     }
 }
