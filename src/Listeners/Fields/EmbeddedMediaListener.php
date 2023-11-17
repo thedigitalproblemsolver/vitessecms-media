@@ -7,6 +7,7 @@ namespace VitesseCms\Media\Listeners\Fields;
 use Phalcon\Events\Event;
 use VitesseCms\Core\DTO\BeforeExecuteFrontendRouteDTO;
 use VitesseCms\Media\Helpers\VideoEmbeddHelper;
+use VitesseCms\Media\Utils\PodcastUtil;
 
 final class EmbeddedMediaListener
 {
@@ -34,6 +35,9 @@ final class EmbeddedMediaListener
             return VideoEmbeddHelper::getEmbeddCode($url);
         }
 
+        if (PodcastUtil::isValidUrl($url)) {
+            return PodcastUtil::getEmbeddCode($url);
+        }
 
         return null;
     }
