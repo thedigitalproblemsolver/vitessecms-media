@@ -1,12 +1,34 @@
 <div class="podcasts row">
     <div class="col-12">
-        <h2>Over de podcast</h2>
+        <h2>%MEDIA_ABOUT_THE_PODCAST%</h2>
         <p>{{description}}</p>
-        <p><a href="{{link}}" target="_blank">Bezoek de website</a></p>
+        <p class="text-right">
+            <a href="{{link}}" target="_blank" data-category="podcast" data-action="visit-website">%MEDIA_VISIT_THE_WEBSITE%</a>
+        </p>
     </div>
     <div class="col-12">
-        <h2>Laatste aflevering</h2>
-        <h3>{{mostRecentEpisode.getTitle}}</h3>
-        <a href="{{mostRecentEpisode.getLink}}" target="_blank">Luister online</a>
+        <h2>%MEDIA_EPISODES%</h2>
+        {{#episodes}}
+            <div class="media border p-3 mb-4">
+                <img src="{{getArtwork.getUri}}" alt="{{getTitle}}" class="mr-3 mt-3" style="width:150px;">
+                <div class="media-body">
+                    <h3>{{getTitle}}</h3>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <audio controls preload="metadata">
+                                <source src="{{getMedia.getUri}}" type="{{getMedia.getMimeType}}">
+                                %MEDIA_AUDIO_NOT_SUPPORTED%
+                            </audio>
+                        </div>
+                        <div class="col-12 col-md-6 text-right">
+                            <a href="{{getLink}}" target="_blank" data-category="podcast" data-action="visit-episode">%MEDIA_GOTO_THIS_EPISODE%</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {{/episodes}}
     </div>
+</div>
+<div class="text-right">
+    {{{pagination}}}
 </div>
