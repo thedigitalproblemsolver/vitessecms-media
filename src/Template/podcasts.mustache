@@ -10,7 +10,9 @@
         <h2>%MEDIA_EPISODES%</h2>
         {{#episodes}}
             <div class="media border p-3 mb-4">
-                <img src="{{getArtwork.getUri}}" alt="{{getTitle}}" class="mr-3 mt-3" style="width:150px;">
+                {{#getArtwork.getUri}}
+                    <img src="{{getArtwork.getUri}}" alt="{{getTitle}}" class="mr-3 mt-3" style="width:150px;">
+                {{/getArtwork.getUri}}
                 <div class="media-body">
                     <h3>{{getTitle}}</h3>
                     <div class="row">
