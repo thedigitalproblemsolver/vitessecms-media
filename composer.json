@@ -28,7 +28,7 @@
     "vlucas/phpdotenv": "~5.4",
     "lukaswhite/podcast-feed-parser": "^1.2",
     "vitessecms/core": "^1.7.1",
-    "vitessecms/block": "^1.8.0",
+    "vitessecms/block": "^1.8.1",
     "vitessecms/form": "^1.4.0",
     "vitessecms/setting": "^1.2.0",
     "vitessecms/datafield": "^1.4.1",
