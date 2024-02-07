@@ -1,4 +1,5 @@
-<?php declare(strict_types=1);
+<?php
+declare(strict_types=1);
 
 namespace VitesseCms\Media\Listeners;
 
@@ -16,16 +17,22 @@ use VitesseCms\Media\Listeners\Services\AssetsServiceListener;
 
 class InitiateAdminListeners implements InitiateListenersInterface
 {
-    public static function setListeners(InjectableInterface $di): void
+    public static function setListeners(InjectableInterface $injectable): void
     {
-        $di->eventsManager->attach(Image::class, new ImageListener());
-        $di->eventsManager->attach(Logo::class, new LogoListener());
-        $di->eventsManager->attach(Video::class, new VideoListener());
-        $di->eventsManager->attach(
+        $injectable->eventsManager->attach(Image::class, new ImageListener());
+        $injectable->eventsManager->attach(Logo::class, new LogoListener());
+        $injectable->eventsManager->attach(Video::class, new VideoListener());
+        $injectable->eventsManager->attach(
             MediaEnum::ASSETS_LISTENER,
-            new AssetsListener($di->configuration->getVendorNameDir())
+            new AssetsListener($injectable->configuration->getVendorNameDir())
         );
-        $di->eventsManager->attach(AssetsEnum::SERVICE_LISTENER->value, new AssetsServiceListener($di->assets));
-        $di->eventsManager->attach('RenderListener', new RenderListener($di->eventsManager, $di->assets));
+        $injectable->eventsManager->attach(
+            AssetsEnum::SERVICE_LISTENER->value,
+            new AssetsServiceListener($injectable->assets)
+        );
+        $injectable->eventsManager->attach(
+            'RenderListener',
+            new RenderListener($injectable->eventsManager, $injectable->assets)
+        );
     }
 }
