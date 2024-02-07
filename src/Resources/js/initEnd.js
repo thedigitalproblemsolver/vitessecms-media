@@ -1,3 +1,7 @@
 for (const init of inits) {
-    init();
+    if (typeof init === 'object') {
+        init.init();
+    } else {
+        init();
+    }
 }
