@@ -15,18 +15,24 @@ use VitesseCms\Media\Listeners\Services\AssetsServiceListener;
 
 class InitiateListeners implements InitiateListenersInterface
 {
-    public static function setListeners(InjectableInterface $di): void
+    public static function setListeners(InjectableInterface $injectable): void
     {
-        $di->eventsManager->attach(
+        $injectable->eventsManager->attach(
             MediaEnum::ASSETS_LISTENER,
-            new AssetsListener($di->configuration->getVendorNameDir())
+            new AssetsListener($injectable->configuration->getVendorNameDir())
         );
-        $di->eventsManager->attach(
+        $injectable->eventsManager->attach(
             MediaEnum::ASSETS_LOAD_GENERIC,
             new CookieConsentListener(AdminUtil::isAdminPage())
         );
-        $di->eventsManager->attach('RenderListener', new RenderListener($di->eventsManager, $di->assets));
-        $di->eventsManager->attach(AssetsEnum::SERVICE_LISTENER->value, new AssetsServiceListener($di->assets));
-        $di->eventsManager->attach(EmbeddedMedia::class, new EmbeddedMediaListener());
+        $injectable->eventsManager->attach(
+            'RenderListener',
+            new RenderListener($injectable->eventsManager, $injectable->assets)
+        );
+        $injectable->eventsManager->attach(
+            AssetsEnum::SERVICE_LISTENER->value,
+            new AssetsServiceListener($injectable->assets)
+        );
+        $injectable->eventsManager->attach(EmbeddedMedia::class, new EmbeddedMediaListener());
     }
 }

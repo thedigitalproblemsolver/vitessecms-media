@@ -4,19 +4,33 @@ declare(strict_types=1);
 
 namespace VitesseCms\Media\Services;
 
+use Phalcon\Assets\Exception;
 use Phalcon\Assets\Filters\Cssmin;
 use Phalcon\Assets\Filters\Jsmin;
+use Phalcon\Assets\Inline;
 use Phalcon\Assets\Manager;
 use Phalcon\Html\TagFactory;
 use Phalcon\Tag;
 
 class AssetsService extends Manager
 {
-    private array $js;
+    /**
+     * @var array|string[]
+     */
+    private array $javascript;
+    /**
+     * @var array|string[]
+     */
     private array $css;
+    /**
+     * @var array|string[]
+     */
     private array $eventLoaders;
     private string $headCode;
 
+    /**
+     * @param array<mixed> $options
+     */
     public function __construct(
         private readonly string $webDir,
         private readonly string $account,
@@ -26,12 +40,15 @@ class AssetsService extends Manager
     ) {
         parent::__construct($tagFactory, $options);
 
-        $this->js = [];
+        $this->javascript = [];
         $this->css = [];
         $this->eventLoaders = [];
         $this->headCode = '';
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getEventLoaders(): array
     {
         return $this->eventLoaders;
@@ -49,23 +66,23 @@ class AssetsService extends Manager
         $this->loadSelect2();
         $this->loadFontAwesome();
         $this->loadMustache();
-        $this->js['site-admin'] = '/assets/default/js/admin.js?v=' . filemtime(
-                $this->webDir . '/assets/default/js/admin.js'
+        $this->javascript['site-admin'] = '/assets/default/js/admin.js?v='.filemtime(
+                $this->webDir.'/assets/default/js/admin.js'
             );
-        $this->css['site-admin'] = '/assets/default/css/admin.css?v=' . filemtime(
-                $this->webDir . '/assets/default/css/admin.css'
+        $this->css['site-admin'] = '/assets/default/css/admin.css?v='.filemtime(
+                $this->webDir.'/assets/default/css/admin.css'
             );
     }
 
     public function loadSortable(): void
     {
         $this->loadJquery();
-        $this->js['sortable'] = '//cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js';
+        $this->javascript['sortable'] = '//cdnjs.cloudflare.com/ajax/libs/jquery-sortable/0.9.13/jquery-sortable-min.js';
     }
 
     public function loadJquery(): void
     {
-        $this->js['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+        $this->javascript['jquery'] = '//ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js';
     }
 
     public function loadEditor(): void
@@ -76,23 +93,23 @@ class AssetsService extends Manager
     public function loadSummerNote(): void
     {
         $this->loadBootstrapJs();
-        $this->js['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js';
+        $this->javascript['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.js';
         $this->css['summernote'] = '//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote-bs4.css';
     }
 
     public function loadBootstrapJs(): void
     {
         $this->loadJquery();
-        $this->js['popper'] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
-        $this->js['tether'] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
-        $this->js['bootstrap'] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
+        $this->javascript['popper'] = '//cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js';
+        $this->javascript['tether'] = '//cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js';
+        $this->javascript['bootstrap'] = '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js';
     }
 
     public function loadSelect2(): void
     {
         $this->loadJquery();
-        $this->js['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
-        $this->js['select2Sortable'] = 'select2Sortable.js';
+        $this->javascript['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js';
+        $this->javascript['select2Sortable'] = 'select2Sortable.js';
         $this->css['select2'] = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css';
     }
 
@@ -104,13 +121,13 @@ class AssetsService extends Manager
     public function loadMustache(): void
     {
         $this->loadJquery();
-        $this->js['mustache'] = '//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js';
-        $this->js['jquery-mustache'] = 'jquery.mustache.js';
+        $this->javascript['mustache'] = '//cdnjs.cloudflare.com/ajax/libs/mustache.js/3.0.1/mustache.min.js';
+        $this->javascript['jquery-mustache'] = 'jquery.mustache.js';
     }
 
     public function loadShop(): void
     {
-        $this->js['shop'] = 'shop.js';
+        $this->javascript['shop'] = 'shop.js';
     }
 
     public function loadFileManager(): void
@@ -119,84 +136,84 @@ class AssetsService extends Manager
         $this->loadFontAwesome();
         $this->loadSite();
         $this->css['filemanager'] = 'filemanager.css';
-        $this->js['filemanager'] = 'filemanager.js';
+        $this->javascript['filemanager'] = 'filemanager.js';
     }
 
     public function loadSite(): void
     {
-        $this->js['helper-js'] = 'helper.js';
-        $this->js['ui-js'] = 'ui.js';
-        $this->js['form-js'] = 'form.js';
-        $this->js['ajax-js'] = 'ajax.js';
-        $this->js['sys-js'] = 'sys.js';
+        $this->javascript['helper-js'] = 'helper.js';
+        $this->javascript['ui-js'] = 'ui.js';
+        $this->javascript['form-js'] = 'form.js';
+        $this->javascript['ajax-js'] = 'ajax.js';
+        $this->javascript['sys-js'] = 'sys.js';
     }
 
     public function loadCookieConsent(): void
     {
-        $this->js['cookieconsent'] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js';
+        $this->javascript['cookieconsent'] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.js';
         $this->css['cookieconsent'] = '//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.1/cookieconsent.min.css';
     }
 
     public function loadBootstrapColorPicker(): void
     {
         $this->loadBootstrapJs();
-        $this->js['bootstrap-colorpicker'] = 'bootstrap-colorpicker.min.js';
+        $this->javascript['bootstrap-colorpicker'] = 'bootstrap-colorpicker.min.js';
     }
 
     public function loadBootstrapToggle(): void
     {
         $this->loadBootstrapJs();
-        $this->js['bootstrap4-toggle'] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js';
+        $this->javascript['bootstrap4-toggle'] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js';
         $this->css['bootstrap4-toggle'] = '//cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css';
     }
 
     public function loadRecaptcha(): void
     {
-        $this->js['recaptcha-api'] = '//www.google.com/recaptcha/api.js';
+        $this->javascript['recaptcha-api'] = '//www.google.com/recaptcha/api.js';
     }
 
     public function loadFilter(): void
     {
         $this->loadJquery();
         $this->loadSlider();
-        $this->js['filter-js'] = 'filter.js';
+        $this->javascript['filter-js'] = 'filter.js';
     }
 
     public function loadSlider(): void
     {
         $this->loadJquery();
         $this->loadSite();
-        $this->js['bootstrap-slider'] = 'bootstrap-slider.min.js';
+        $this->javascript['bootstrap-slider'] = 'bootstrap-slider.min.js';
         $this->css['bootstrap-slider'] = 'bootstrap-slider.min.css';
     }
 
     public function loadGoogleMaps(string $apiKey): void
     {
-        $this->js['google-maps-1'] = '//maps.google.com/maps/api/js?key=' . $apiKey;
-        $this->js['google-maps-2'] = '//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.min.js';
+        $this->javascript['google-maps-1'] = '//maps.google.com/maps/api/js?key='.$apiKey;
+        $this->javascript['google-maps-2'] = '//cdnjs.cloudflare.com/ajax/libs/gmaps.js/0.4.25/gmaps.min.js';
     }
 
     public function loadJqueryUi(): void
     {
         $this->loadJquery();
-        $this->js['jqueryUi'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
+        $this->javascript['jqueryUi'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js';
         $this->css['jqueryUi'] = '//ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css';
     }
 
     public function loadTheGoogle(): void
     {
-        $this->js['theGoogle'] = 'theGoogle.js';
+        $this->javascript['theGoogle'] = 'theGoogle.js';
     }
 
     public function loadLazyLoading(): void
     {
         $this->loadJquery();
-        $this->js['lazyload'] = '//cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js';
+        $this->javascript['lazyload'] = '//cdnjs.cloudflare.com/ajax/libs/jquery_lazyload/1.9.7/jquery.lazyload.min.js';
     }
 
     public function insertJs(string $url): void
     {
-        $this->js[] = $url;
+        $this->javascript[] = $url;
     }
 
     public function insertCss(string $url): void
@@ -211,7 +228,7 @@ class AssetsService extends Manager
         $return = ob_get_contents();
         ob_end_clean();
 
-        return $return;
+        return (string) $return;
     }
 
     public function getInlineCss(): string
@@ -221,80 +238,115 @@ class AssetsService extends Manager
         $return = ob_get_contents();
         ob_end_clean();
 
-        return $return;
+        return (string) $return;
+    }
+
+    public function addInlineBabel(string $code): void
+    {
+        $this->loadReact();
+        $this->addInlineCode(new Inline('babel', $code));
+    }
+
+    public function loadReact(): void
+    {
+        $this->javascript['react'] = 'https://unpkg.com/react@18/umd/react.production.min.js';
+        $this->javascript['react-dom'] = 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js';
+        $this->javascript['babel'] = 'https://unpkg.com/babel-standalone@6/babel.min.js';
+    }
+
+    public function getInlineBabel(): string
+    {
+        try {
+            $babel = $this->get('babel');
+            if (count($babel->getCodes()) > 0) {
+                $return = '';
+                /** @var Inline $code */
+                foreach ($babel->getCodes() as $code) {
+                    $return .= $code->getContent();
+                }
+
+                return '<script type="text/babel">'.(new Jsmin())->filter($return).'</script>';
+            }
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+
+        return '';
     }
 
     public function buildAssets(string $type): ?string
     {
         $collection = $this->collection($type);
-        $collectionExternal = $this->collection('external' . $type);
-        $fileBase = 'assets/' . $this->account . '/' . $type . '/site.' . $type;
+        $collectionExternal = $this->collection('external'.$type);
+        $fileBase = 'assets/'.$this->account.'/'.$type.'/site.'.$type;
         $cacheHash = '';
-        $addFunction = 'add' . ucfirst($type);
+        $addFunction = 'add'.ucfirst($type);
 
-        if (is_file($this->webDir . $fileBase)) :
-            $cacheHash .= filemtime($this->webDir . $fileBase);
+        if (is_file($this->webDir.$fileBase)) {
+            $cacheHash .= filemtime($this->webDir.$fileBase);
             $collection->$addFunction($fileBase);
-        endif;
+        }
 
-        foreach ($this->getByType($type) as $file) :
-            var_dump($file);
-            $link = 'assets/default/' . $type . '/' . $file;
-            if (is_file($link)) :
+        foreach ($this->getByType($type) as $file) {
+            $link = 'assets/default/'.$type.'/'.$file;
+            if (is_file($link)) {
                 $cacheHash .= filemtime($link);
-                if (substr_count($file, '.' . $type) === 0) :
-                    $link = $this->baseUri . $file . '?v=' . filemtime($link);
-                endif;
+                if (0 === substr_count($file, '.'.$type)) {
+                    $link = $this->baseUri.$file.'?v='.filemtime($link);
+                }
                 $collection->$addFunction($link);
-            else :
+            } else {
                 $collectionExternal->$addFunction($file, false);
-            endif;
-        endforeach;
+            }
+        }
 
         $filename = md5($cacheHash);
-        $combinedFile = 'assets/' . $this->account . '/' . $type . '/cache/' . $filename . '.' . $type;
+        $combinedFile = 'assets/'.$this->account.'/'.$type.'/cache/'.$filename.'.'.$type;
 
         $collection->join(true);
-        $collection->setTargetPath($this->webDir . $combinedFile);
+        $collection->setTargetPath($this->webDir.$combinedFile);
         $collection->setTargetUri($combinedFile);
-        switch ($type) :
+        switch ($type) {
             case 'js':
-                if (!is_file($this->webDir . $combinedFile) || isset($_SESSION['cache'])) :
+                if (!is_file($this->webDir.$combinedFile) || isset($_SESSION['cache'])) {
                     $collection->addFilter(new Jsmin());
                     $this->outputJs($type);
-                endif;
+                }
 
                 $tags = '';
                 ob_start();
-                $this->outputJs('external' . $type);
+                $this->outputJs('external'.$type);
                 $tags .= ob_get_contents();
                 ob_end_clean();
                 $tags .= Tag::javascriptInclude($combinedFile);
 
                 return $tags;
             case 'css':
-                if (!is_file($this->webDir . $combinedFile) || isset($_SESSION['cache'])) :
+                if (!is_file($this->webDir.$combinedFile) || isset($_SESSION['cache'])) {
                     $collection->addFilter(new Cssmin());
                     $this->outputCss($type);
-                endif;
+                }
 
                 $tags = '';
                 ob_start();
-                $this->outputCss('external' . $type);
+                $this->outputCss('external'.$type);
                 $tags .= ob_get_contents();
                 ob_end_clean();
                 $tags .= Tag::stylesheetLink($combinedFile);
 
                 return $tags;
-        endswitch;
+        }
 
         return null;
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getByType(string $type): array
     {
         return match ($type) {
-            'js' => $this->js,
+            'js' => $this->javascript,
             'css' => $this->css,
             default => [],
         };
