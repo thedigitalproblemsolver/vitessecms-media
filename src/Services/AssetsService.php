@@ -221,11 +221,6 @@ class AssetsService extends Manager
         $this->css[] = $url;
     }
 
-    public function insertBabel(string $url): void
-    {
-        $this->babel[] = $url;
-    }
-
     public function getInlineJs(): string
     {
         ob_start();
@@ -254,9 +249,9 @@ class AssetsService extends Manager
 
     public function loadReact(): void
     {
-        $this->javascript['react'] = 'https://unpkg.com/react@18/umd/react.development.js';
-        $this->javascript['react-dom'] = 'https://unpkg.com/react-dom@18/umd/react-dom.development.js';
-        $this->javascript['babel'] = 'https://unpkg.com/@babel/standalone/babel.min.js';
+        $this->javascript['react'] = 'https://unpkg.com/react@18/umd/react.production.min.js';
+        $this->javascript['react-dom'] = 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js';
+        $this->javascript['babel'] = 'https://unpkg.com/babel-standalone@6/babel.min.js';
     }
 
     public function getInlineBabel(): string
